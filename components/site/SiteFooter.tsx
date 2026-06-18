@@ -1,0 +1,117 @@
+import Link from "next/link";
+import {
+  Heart,
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Instagram,
+  Twitter,
+  Linkedin,
+} from "lucide-react";
+import type { SiteSettings } from "@/lib/api/settings";
+import type { CmsPageSummary } from "@/lib/api/cms";
+
+interface SiteFooterProps {
+  settings: SiteSettings;
+  pages: CmsPageSummary[];
+}
+
+/** Dynamic public footer — all content driven by the Settings + CMS APIs. */
+export function SiteFooter({ settings, pages }: SiteFooterProps) {
+  const socials = [
+    { icon: Facebook, href: settings.facebook },
+    { icon: Instagram, href: settings.instagram },
+    { icon: Twitter, href: settings.twitter },
+    { icon: Linkedin, href: settings.linkedin },
+  ].filter((s) => s.href);
+
+  const year = new Date().getFullYear();
+  const copyright =
+    settings.copyrightText || `© ${year} ${settings.siteName}. All rights reserved.`;
+
+  return (
+    <footer className="border-t bg-muted/30">
+      <div className="container py-14 grid gap-10 md:grid-cols-4">
+        {/* Brand + socials */}
+        <div className="space-y-3 md:col-span-2">
+          <div className="flex items-center gap-2">
+            {settings.logo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={settings.logo} alt={settings.siteName} className="h-8 w-auto" />
+            ) : (
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <Heart className="h-4 w-4" />
+              </div>
+            )}
+            <span className="font-bold text-lg">{settings.siteName}</span>
+          </div>
+          {settings.metaDescription && (
+            <p className="text-sm text-muted-foreground max-w-sm">
+              {settings.metaDescription}
+            </p>
+          )}
+          {socials.length > 0 && (
+            <div className="flex gap-2 pt-1">
+              {socials.map((soc, i) => {
+                const Icon = soc.icon;
+                return (
+                  <a
+                    key={i}
+                    href={soc.href as string}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border bg-background text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Quick links — published CMS pages */}
+        <div className="space-y-2 text-sm">
+          <p className="font-semibold text-foreground">Quick Links</p>
+          <Link href="/" className="block text-muted-foreground hover:text-foreground">Home</Link>
+          {pages.map((p) => (
+            <Link
+              key={p.slug}
+              href={`/${p.slug}`}
+              className="block text-muted-foreground hover:text-foreground"
+            >
+              {p.title}
+            </Link>
+          ))}
+        </div>
+
+        {/* Contact */}
+        <div className="space-y-2 text-sm">
+          <p className="font-semibold text-foreground">Contact</p>
+          {settings.email && (
+            <a href={`mailto:${settings.email}`} className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
+              <Mail className="h-3.5 w-3.5" /> {settings.email}
+            </a>
+          )}
+          {settings.phone && (
+            <a href={`tel:${settings.phone}`} className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
+              <Phone className="h-3.5 w-3.5" /> {settings.phone}
+            </a>
+          )}
+          {settings.address && (
+            <p className="flex items-start gap-2 text-muted-foreground">
+              <MapPin className="h-3.5 w-3.5 mt-0.5" /> {settings.address}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="border-t">
+        <div className="container py-5 text-sm text-muted-foreground text-center">
+          {copyright}
+        </div>
+      </div>
+    </footer>
+  );
+}
