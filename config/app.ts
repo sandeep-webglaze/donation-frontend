@@ -3,7 +3,9 @@ import {
   Users,
   Settings,
   FileText,
+  FileStack,
   Search,
+  Image,
   HelpCircle,
 } from "lucide-react";
 import type { NavItem } from "@/types";
@@ -14,8 +16,10 @@ export const APP_DESCRIPTION = "Donation platform admin";
 export const ROUTES = {
   HOME: "/",
   DASHBOARD: "/admin",
+  PAGES: "/admin/pages",
   CMS: "/admin/cms",
   SEO: "/admin/seo",
+  GALLERY: "/admin/gallery",
   USERS: "/admin/users",
   SETTINGS: "/admin/settings",
   LOGIN: "/login",
@@ -29,6 +33,11 @@ export const SIDEBAR_NAV: NavItem[] = [
     icon: LayoutDashboard,
   },
   {
+    label: "Pages",
+    href: ROUTES.PAGES,
+    icon: FileStack,
+  },
+  {
     label: "CMS Pages",
     href: ROUTES.CMS,
     icon: FileText,
@@ -37,6 +46,11 @@ export const SIDEBAR_NAV: NavItem[] = [
     label: "SEO Manager",
     href: ROUTES.SEO,
     icon: Search,
+  },
+  {
+    label: "Gallery",
+    href: ROUTES.GALLERY,
+    icon: Image,
   },
   {
     label: "Users",

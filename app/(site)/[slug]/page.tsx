@@ -8,7 +8,13 @@ interface Props {
   params: { slug: string };
 }
 
+/** Asset-like requests (e.g. firebase-messaging-sw.js, *.png) aren't CMS pages. */
+const isAssetLike = (slug: string) => /\.[a-z0-9]+$/i.test(slug);
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (isAssetLike(params.slug)) {
+    return { title: "Not found", robots: { index: false, follow: false } };
+  }
   const page = await getPageBySlug(params.slug);
   if (!page) return { title: "Not found", robots: { index: false, follow: false } };
 
@@ -23,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CmsPageRoute({ params }: Props) {
+  if (isAssetLike(params.slug)) notFound();
   const page = await getPageBySlug(params.slug);
   if (!page) notFound();
 

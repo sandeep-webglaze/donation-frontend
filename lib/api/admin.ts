@@ -2,6 +2,8 @@ import { apiClient } from "./client";
 import type { SiteSettings } from "./settings";
 import type { CmsPage } from "./cms";
 import type { PageSeo } from "./seo-meta";
+import type { GalleryItem } from "./gallery-items";
+import type { ContentBlock } from "./content";
 
 /** Backend wraps responses as { success, data, ... }; unwrap to the payload. */
 function unwrap<T>(res: { data: { data: T } }): T {
@@ -62,4 +64,27 @@ export const usersAdminApi = {
   remove: async (id: string): Promise<void> => {
     await apiClient.delete(`/users/${id}`);
   },
+};
+
+// ─── Gallery ─────────────────────────────────────────────────────────────────
+export const galleryAdminApi = {
+  list: async (): Promise<GalleryItem[]> => unwrap(await apiClient.get("/gallery")),
+  listFor: async (pageKey: string, section: string): Promise<GalleryItem[]> =>
+    unwrap(await apiClient.get(`/gallery?pageKey=${pageKey}&section=${section}`)),
+  create: async (data: Partial<GalleryItem>): Promise<GalleryItem> =>
+    unwrap(await apiClient.post("/gallery", data)),
+  remove: async (id: string): Promise<void> => {
+    await apiClient.delete(`/gallery/${id}`);
+  },
+};
+
+// ─── Content blocks ──────────────────────────────────────────────────────────
+export const contentAdminApi = {
+  list: async (): Promise<ContentBlock[]> => unwrap(await apiClient.get("/content")),
+  upsert: async (
+    pageKey: string,
+    sectionKey: string,
+    data: Partial<ContentBlock>
+  ): Promise<ContentBlock> =>
+    unwrap(await apiClient.put(`/content/${pageKey}/${sectionKey}`, data)),
 };

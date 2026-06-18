@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Quicksand } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { BrandProvider } from "@/components/providers/BrandProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { getSettings } from "@/lib/api/settings";
 import { SITE_URL } from "@/lib/api/server";
 
-const inter = Inter({
+// Body text → Plus Jakarta Sans · Headings → Quicksand
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
 });
 
-const playfair = Playfair_Display({
+const heading = Quicksand({
   subsets: ["latin"],
-  variable: "--font-serif",
-  weight: ["500", "600", "700", "800"],
+  variable: "--font-heading",
+  weight: ["400", "500", "600", "700"],
 });
 
 /** Site-wide default metadata, driven by the Settings API. */
@@ -51,20 +51,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          themes={["light", "dark"]}
-          disableTransitionOnChange
-        >
-          <BrandProvider>
-            <QueryProvider>
-              {children}
-              <Toaster richColors position="top-right" />
-            </QueryProvider>
-          </BrandProvider>
+      <body className={`${sans.variable} ${heading.variable} font-sans antialiased`}>
+        <ThemeProvider attribute="class" forcedTheme="light" disableTransitionOnChange>
+          <QueryProvider>
+            {children}
+            <Toaster richColors position="top-right" />
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

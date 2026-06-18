@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FileUpload } from "@/components/admin/FileUpload";
 import { useSiteSettings, useUpdateSiteSettings } from "@/lib/hooks/useAdmin";
 import type { SiteSettings } from "@/lib/api/settings";
 
@@ -88,8 +89,24 @@ export function SiteSettingsForm() {
             </CardHeader>
             <CardContent className="space-y-4">
               <Field label="Website Name" value={g("siteName")} onChange={set("siteName")} placeholder="The Friends of Mewar" />
-              <Field label="Logo URL" value={g("logo")} onChange={set("logo")} placeholder="https://…/logo.png" />
-              <Field label="Favicon URL" value={g("favicon")} onChange={set("favicon")} placeholder="https://…/favicon.ico" />
+              <div className="space-y-1.5">
+                <Label className="text-sm">Logo</Label>
+                <div className="flex gap-2">
+                  <Input value={g("logo")} onChange={(e) => set("logo")(e.target.value)} placeholder="https://…/logo.png or upload →" />
+                  <FileUpload accept="image/*" label="Upload" onUploaded={(url) => set("logo")(url)} />
+                </div>
+                {g("logo") && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={g("logo")} alt="logo preview" className="mt-2 h-12 w-auto rounded border bg-muted p-1" />
+                )}
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-sm">Favicon</Label>
+                <div className="flex gap-2">
+                  <Input value={g("favicon")} onChange={(e) => set("favicon")(e.target.value)} placeholder="https://…/favicon.ico or upload →" />
+                  <FileUpload accept="image/*" label="Upload" onUploaded={(url) => set("favicon")(url)} />
+                </div>
+              </div>
               <Field label="Copyright Text" value={g("copyrightText")} onChange={set("copyrightText")} placeholder="© 2026 The Friends of Mewar" />
             </CardContent>
           </Card>

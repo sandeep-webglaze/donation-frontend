@@ -5,8 +5,12 @@ import {
   seoAdminApi,
   cmsAdminApi,
   usersAdminApi,
+  galleryAdminApi,
+  contentAdminApi,
   type AdminUser,
 } from "@/lib/api/admin";
+import type { GalleryItem } from "@/lib/api/gallery-items";
+import type { ContentBlock } from "@/lib/api/content";
 import type { SiteSettings } from "@/lib/api/settings";
 import type { CmsPage } from "@/lib/api/cms";
 import type { PageSeo } from "@/lib/api/seo-meta";
@@ -128,6 +132,57 @@ export function useDeleteUser() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["users"] });
       toast.success("User deleted");
+    },
+    onError: err,
+  });
+}
+
+// ─── Gallery ─────────────────────────────────────────────────────────────────
+export function useGalleryList() {
+  return useQuery({ queryKey: ["gallery"], queryFn: galleryAdminApi.list });
+}
+export function useAddGalleryItem() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: Partial<GalleryItem>) => galleryAdminApi.create(data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["gallery"] });
+      toast.success("Added to gallery");
+    },
+    onError: err,
+  });
+}
+export function useDeleteGalleryItem() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => galleryAdminApi.remove(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["gallery"] });
+      toast.success("Removed");
+    },
+    onError: err,
+  });
+}
+/** Media for one page+section. */
+export function useSectionMedia(pageKey: string, section: string) {
+  return useQuery({
+    queryKey: ["gallery", pageKey, section],
+    queryFn: () => galleryAdminApi.listFor(pageKey, section),
+  });
+}
+
+// ─── Content blocks ──────────────────────────────────────────────────────────
+export function useContentList() {
+  return useQuery({ queryKey: ["content"], queryFn: contentAdminApi.list });
+}
+export function useUpsertContent() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ pageKey, sectionKey, data }: { pageKey: string; sectionKey: string; data: Partial<ContentBlock> }) =>
+      contentAdminApi.upsert(pageKey, sectionKey, data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["content"] });
+      toast.success("Content saved");
     },
     onError: err,
   });

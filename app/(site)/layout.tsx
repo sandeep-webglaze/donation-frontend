@@ -1,5 +1,6 @@
 import { getSettings } from "@/lib/api/settings";
 import { getPublishedPages } from "@/lib/api/cms";
+import { TopBar } from "@/components/site/TopBar";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
@@ -19,6 +20,7 @@ export default async function SiteLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
+      <TopBar settings={settings} />
       <SiteHeader settings={settings} pages={pages} />
       <main className="flex-1">{children}</main>
       <SiteFooter settings={settings} pages={pages} />

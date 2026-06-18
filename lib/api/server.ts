@@ -28,7 +28,8 @@ export async function serverFetch<T>(
   try {
     const res = await fetch(`${API_BASE_URL}${path}`, {
       headers: { "Content-Type": "application/json" },
-      next: { revalidate: opts.revalidate ?? 60 },
+      // Always fetch fresh so admin changes appear immediately on the site.
+      cache: "no-store",
     });
     if (!res.ok) return null;
     const json = await res.json();

@@ -100,8 +100,9 @@ const config: Config = {
         shimmer: "shimmer 2s linear infinite",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-heading)", "Quicksand", "sans-serif"],
+        heading: ["var(--font-heading)", "Quicksand", "sans-serif"],
         mono: ["var(--font-geist-mono)", "monospace"],
       },
     },

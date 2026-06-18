@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  Heart,
   Mail,
   Phone,
   MapPin,
@@ -8,8 +7,9 @@ import {
   Instagram,
   Twitter,
   Linkedin,
+  Youtube,
 } from "lucide-react";
-import type { SiteSettings } from "@/lib/api/settings";
+import { FOM_LOGO, type SiteSettings } from "@/lib/api/settings";
 import type { CmsPageSummary } from "@/lib/api/cms";
 
 interface SiteFooterProps {
@@ -20,10 +20,11 @@ interface SiteFooterProps {
 /** Dynamic public footer — all content driven by the Settings + CMS APIs. */
 export function SiteFooter({ settings, pages }: SiteFooterProps) {
   const socials = [
-    { icon: Facebook, href: settings.facebook },
-    { icon: Instagram, href: settings.instagram },
-    { icon: Twitter, href: settings.twitter },
-    { icon: Linkedin, href: settings.linkedin },
+    { icon: Facebook, href: settings.facebook || "https://www.facebook.com/FriendsofMewar/" },
+    { icon: Instagram, href: settings.instagram || "https://www.instagram.com/thefriendsofmewar" },
+    { icon: Linkedin, href: settings.linkedin || "https://www.linkedin.com/company/friends-of-mewar/" },
+    { icon: Youtube, href: "https://www.youtube.com/@TheFriendsOfMewar" },
+    ...(settings.twitter ? [{ icon: Twitter, href: settings.twitter }] : []),
   ].filter((s) => s.href);
 
   const year = new Date().getFullYear();
@@ -36,15 +37,8 @@ export function SiteFooter({ settings, pages }: SiteFooterProps) {
         {/* Brand + socials */}
         <div className="space-y-3 md:col-span-2">
           <div className="flex items-center gap-2">
-            {settings.logo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={settings.logo} alt={settings.siteName} className="h-8 w-auto" />
-            ) : (
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Heart className="h-4 w-4" />
-              </div>
-            )}
-            <span className="font-bold text-lg">{settings.siteName}</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={settings.logo || FOM_LOGO} alt={settings.siteName} className="h-10 w-auto" />
           </div>
           {settings.metaDescription && (
             <p className="text-sm text-muted-foreground max-w-sm">

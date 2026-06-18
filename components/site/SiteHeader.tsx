@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Heart, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/providers/ThemeToggle";
-import type { SiteSettings } from "@/lib/api/settings";
+import { FOM_LOGO, type SiteSettings } from "@/lib/api/settings";
 import type { CmsPageSummary } from "@/lib/api/cms";
 
 interface SiteHeaderProps {
@@ -13,63 +12,72 @@ interface SiteHeaderProps {
   pages: CmsPageSummary[];
 }
 
-/**
- * Dynamic public site header. Logo + name come from Settings API; nav links
- * include the published CMS pages.
- */
 export function SiteHeader({ settings, pages }: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
   const navPages = pages.slice(0, 4);
 
+  const links = [
+    { href: "/", label: "Home" },
+    { href: "/about-us", label: "About Us" },
+    ...navPages.map((p) => ({ href: `/${p.slug}`, label: p.title })),
+  ];
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
-        <Link href="/" className="flex items-center gap-2 mr-8">
-          {settings.logo ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={settings.logo} alt={settings.siteName} className="h-9 w-auto" />
-          ) : (
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm shadow-primary/30">
-              <Heart className="h-4 w-4" />
-            </div>
-          )}
-          <span className="font-bold text-lg tracking-tight">{settings.siteName}</span>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/80 shadow-sm backdrop-blur-xl supports-[backdrop-filter]:bg-background/65">
+      <div className="container flex h-[72px] items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex shrink-0 items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={settings.logo || FOM_LOGO}
+            alt={settings.siteName}
+            className="h-12 w-auto object-contain"
+          />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-muted-foreground">
-          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-          {navPages.map((p) => (
-            <Link key={p.slug} href={`/${p.slug}`} className="hover:text-foreground transition-colors">
-              {p.title}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="ml-auto flex items-center gap-2">
-          <ThemeToggle />
-          <Button asChild className="hidden sm:inline-flex shadow-sm shadow-primary/30">
-            <Link href="/donate">Donate</Link>
-          </Button>
-          <button
-            className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border"
-            aria-label="Menu"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
-        </div>
-      </div>
-
-      {open && (
-        <div className="md:hidden border-t bg-background">
-          <nav className="container flex flex-col py-3 gap-1 text-sm">
-            <Link href="/" className="py-2" onClick={() => setOpen(false)}>Home</Link>
-            {pages.map((p) => (
-              <Link key={p.slug} href={`/${p.slug}`} className="py-2" onClick={() => setOpen(false)}>
-                {p.title}
+        {/* Right — nav + donate (desktop) */}
+        <div className="hidden items-center gap-9 lg:flex">
+          <nav className="flex items-center gap-8 text-[15px] font-semibold text-foreground/80">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="relative py-1 transition-colors hover:text-primary after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
+              >
+                {l.label}
               </Link>
             ))}
-            <Button asChild className="mt-2 w-full">
+          </nav>
+          <Button asChild size="lg" className="rounded-full px-7 shadow-sm shadow-primary/30">
+            <Link href="/donate">Donate</Link>
+          </Button>
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border text-foreground transition-colors hover:bg-muted lg:hidden"
+          aria-label="Menu"
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div className="border-t bg-background lg:hidden">
+          <nav className="container flex flex-col gap-1 py-3 text-[15px] font-medium">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="rounded-md px-2 py-2.5 transition-colors hover:bg-muted hover:text-primary"
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <Button asChild className="mt-2 w-full rounded-full">
               <Link href="/donate" onClick={() => setOpen(false)}>Donate</Link>
             </Button>
           </nav>

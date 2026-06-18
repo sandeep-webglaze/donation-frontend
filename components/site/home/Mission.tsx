@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check, Crown } from "lucide-react";
+import { TopoLines } from "@/components/site/Decor";
 import type { SiteSettings } from "@/lib/api/settings";
 
 const POINTS = [
@@ -12,8 +13,9 @@ const POINTS = [
 
 export function Mission({ settings }: { settings: SiteSettings }) {
   return (
-    <section id="about" className="border-y bg-muted/30">
-      <div className="container grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
+    <section id="about" className="relative overflow-hidden border-y bg-muted/30">
+      <TopoLines className="absolute inset-0 h-full w-full text-foreground/[0.035]" />
+      <div className="container relative grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
         {/* Visual */}
         <div className="relative order-last lg:order-first">
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border bg-gradient-to-br from-amber-400/15 via-primary/10 to-background shadow-xl">

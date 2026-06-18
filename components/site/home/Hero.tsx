@@ -1,86 +1,99 @@
 import Link from "next/link";
+import { ArrowRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Crown, Landmark, HeartPulse, GraduationCap, ShieldCheck } from "lucide-react";
+import { PlayVideoButton } from "@/components/site/PlayVideoButton";
+import { TopoLines } from "@/components/site/Decor";
+import { getGallery } from "@/lib/api/gallery-items";
+import { getPageContent } from "@/lib/api/content";
 import type { SiteSettings } from "@/lib/api/settings";
 
-export function Hero({ settings }: { settings: SiteSettings }) {
-  const description =
-    settings.metaDescription ||
-    "Born from the values of the House of Mewar — the world's longest-serving dynasty — we carry forward a legacy of philanthropy, community empowerment and cultural preservation.";
+export async function Hero({ settings }: { settings: SiteSettings }) {
+  const [media, content] = await Promise.all([
+    getGallery("home", "hero"),
+    getPageContent("home"),
+  ]);
+  const c = content.hero;
+  const heroImg = media.find((g) => g.type === "image")?.url || null;
+  const introVideo = media.find((g) => g.type === "video")?.url || null;
+
+  const eyebrow = c?.subtitle || "Change the world together";
+  const heading = c?.title || "Carrying forward a timeless legacy";
+  const body =
+    c?.body ||
+    "The Friends of Mewar was born from the values of the House of Mewar — the world's longest-serving dynasty — advancing healthcare, women's empowerment & education, and cultural preservation.";
 
   return (
-    <section className="relative overflow-hidden border-b">
-      {/* Decorative background */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -right-32 h-[520px] w-[520px] rounded-full bg-primary/20 blur-[130px]" />
-        <div className="absolute -bottom-40 -left-32 h-[420px] w-[420px] rounded-full bg-amber-400/20 blur-[120px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border)/0.6)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border)/0.6)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_55%,transparent_100%)]" />
+    <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary">
+      {/* logo-color accents */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-0">
+        <div className="absolute -top-32 right-10 h-96 w-96 rounded-full bg-secondary/30 blur-[120px]" />
+        <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-primary/40 blur-[120px]" />
       </div>
+      <TopoLines className="absolute inset-0 h-full w-full text-white/10" />
 
-      <div className="container grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
-        {/* Copy */}
+      <div className="container grid items-center gap-12 pt-16 pb-32 lg:grid-cols-2 lg:gap-10 lg:pt-24 lg:pb-44">
+        {/* Left — copy (FOM content) */}
         <div className="space-y-7">
-          <span className="inline-flex items-center gap-2 rounded-full border bg-background/60 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground backdrop-blur">
-            <Crown className="h-3.5 w-3.5 text-amber-500" />
-            House of Mewar · Since 734 AD
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/95 px-4 py-1.5 text-sm font-semibold text-foreground shadow-sm backdrop-blur-sm">
+            <Heart className="h-4 w-4 fill-primary text-primary" />
+            {eyebrow}
           </span>
 
-          <h1 className="font-serif text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-            {settings.siteName}
+          <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-white md:text-5xl lg:text-6xl">
+            {heading}
           </h1>
 
-          <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-            {description}
-          </p>
+          <p className="max-w-xl text-lg leading-relaxed text-white/90">{body}</p>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" asChild className="h-12 px-8 text-base shadow-lg shadow-primary/25">
+            <Button
+              size="lg"
+              asChild
+              className="h-12 rounded-full bg-white px-8 text-base text-primary shadow-lg shadow-black/20 hover:bg-white/90"
+            >
               <Link href="/donate">
                 Donate Now <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="h-12 px-8 text-base">
-              <Link href="/about-us">Our Story</Link>
+            <Button
+              size="lg"
+              variant="secondary"
+              asChild
+              className="h-12 rounded-full px-8 text-base shadow-lg shadow-black/10"
+            >
+              <Link href="/about-us">Explore More</Link>
             </Button>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-primary" /> 80G tax benefits</span>
-            <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-primary" /> Secure payments</span>
-            <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-primary" /> 100% transparency</span>
           </div>
         </div>
 
-        {/* Decorative emblem panel */}
-        <div className="relative mx-auto w-full max-w-md">
-          <div className="relative aspect-square overflow-hidden rounded-[2rem] border bg-gradient-to-br from-primary/15 via-amber-400/10 to-background shadow-2xl shadow-primary/10">
-            <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,hsl(var(--primary)/0.25),transparent_60%)]" />
-            {settings.logo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={settings.logo} alt={settings.siteName} className="absolute inset-0 m-auto h-1/2 w-1/2 object-contain" />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-amber-400/40 bg-background/70 text-primary shadow-xl backdrop-blur">
-                  <Landmark className="h-14 w-14" />
-                </div>
-              </div>
-            )}
-          </div>
+        {/* Right — image + play */}
+        <div className="relative">
+          <div
+            aria-hidden
+            className="absolute -left-2 top-8 hidden h-[80%] w-3 -skew-x-12 bg-secondary lg:block"
+          />
+          <div
+            aria-hidden
+            className="absolute left-3 top-16 hidden h-[70%] w-3 -skew-x-12 bg-white/40 lg:block"
+          />
 
-          {/* Floating cause badges */}
-          <FloatBadge className="-left-4 top-8" icon={<HeartPulse className="h-4 w-4" />} label="Healthcare" />
-          <FloatBadge className="-right-4 top-1/3" icon={<GraduationCap className="h-4 w-4" />} label="Education" />
-          <FloatBadge className="bottom-6 left-1/4" icon={<Landmark className="h-4 w-4" />} label="Heritage" />
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/30 shadow-2xl">
+            {heroImg ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={heroImg}
+                alt={settings.siteName}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="h-full w-full bg-white/10 backdrop-blur-sm" />
+            )}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <PlayVideoButton url={introVideo} />
+            </div>
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function FloatBadge({ className, icon, label }: { className: string; icon: React.ReactNode; label: string }) {
-  return (
-    <div className={`absolute ${className} flex items-center gap-2 rounded-xl border bg-background/90 px-3 py-2 text-sm font-medium shadow-lg backdrop-blur`}>
-      <span className="text-primary">{icon}</span> {label}
-    </div>
   );
 }
