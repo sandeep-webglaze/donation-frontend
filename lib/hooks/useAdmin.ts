@@ -49,6 +49,17 @@ export function useUpsertSeo() {
     onError: err,
   });
 }
+export function useDeleteSeo() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (key: string) => seoAdminApi.remove(key),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["seo"] });
+      toast.success("SEO reset");
+    },
+    onError: err,
+  });
+}
 
 // ─── CMS Pages ───────────────────────────────────────────────────────────────
 export function useCmsPages() {
@@ -152,6 +163,18 @@ export function useAddGalleryItem() {
     onError: err,
   });
 }
+export function useUpdateGalleryItem() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<GalleryItem> }) =>
+      galleryAdminApi.update(id, data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["gallery"] });
+      toast.success("Saved");
+    },
+    onError: err,
+  });
+}
 export function useDeleteGalleryItem() {
   const qc = useQueryClient();
   return useMutation({
@@ -183,6 +206,18 @@ export function useUpsertContent() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["content"] });
       toast.success("Content saved");
+    },
+    onError: err,
+  });
+}
+export function useDeleteContent() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ pageKey, sectionKey }: { pageKey: string; sectionKey: string }) =>
+      contentAdminApi.remove(pageKey, sectionKey),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["content"] });
+      toast.success("Section cleared");
     },
     onError: err,
   });

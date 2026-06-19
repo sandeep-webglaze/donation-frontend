@@ -3,6 +3,7 @@ import { getPublishedPages } from "@/lib/api/cms";
 import { TopBar } from "@/components/site/TopBar";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { MobileDonateBar } from "@/components/site/MobileDonateBar";
 
 /**
  * Public site shell — fetches website settings + published pages server-side
@@ -22,8 +23,9 @@ export default async function SiteLayout({
     <div className="flex min-h-screen flex-col">
       <TopBar settings={settings} />
       <SiteHeader settings={settings} pages={pages} />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-16 md:pb-0">{children}</main>
       <SiteFooter settings={settings} pages={pages} />
+      <MobileDonateBar settings={settings} />
     </div>
   );
 }

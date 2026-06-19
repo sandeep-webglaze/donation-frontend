@@ -11,7 +11,10 @@ import type { SiteSettings } from "@/lib/api/settings";
 
 const FOM_YT = "https://www.youtube.com/@TheFriendsOfMewar";
 
-/** Thin top utility bar (welcome + phone/email + social) — light. */
+// Bright brand-red accent block (for the Follow-Us ribbon).
+const ACCENT = "bg-[linear-gradient(180deg,#e1626c_0%,#d44b55_55%,#c43c46_100%)]";
+
+/** Donatm-style top bar: dark maroon bar, Welcome + contact (left), red angled Follow-Us block (right). */
 export function TopBar({ settings }: { settings: SiteSettings }) {
   const socials = [
     { icon: Facebook, href: settings.facebook || "https://www.facebook.com/FriendsofMewar/" },
@@ -22,57 +25,67 @@ export function TopBar({ settings }: { settings: SiteSettings }) {
   ].filter((s) => s.href);
 
   return (
-    <div
-      className="
-hidden md:block
-border-b border-primary/10
-bg-gradient-to-r
-from-primary/10
-via-background
-to-secondary/20
-backdrop-blur-sm
-"
-    >
-      <div className="container flex h-10 items-center justify-between text-sm">
-        <span className="flex items-center gap-1">
-          <span className="font-semibold text-primary">Welcome</span>
-          <span>to {settings.siteName}</span>
-        </span>
-        <div className="flex items-center gap-5">
+    <div className="relative z-50 hidden h-11 w-full overflow-hidden bg-[linear-gradient(90deg,#e0694e_0%,#d44b55_35%,#a32f37_70%,#7c2128_100%)] text-[13px] text-white md:block">
+      <div className="container relative flex h-full items-stretch justify-between">
+        {/* ── Left: welcome + contact ── */}
+        <div className="flex items-center gap-4">
+          <span>
+            <span className="font-semibold text-[#fddc35]">Welcome</span>
+            <span className="text-white/85"> to {settings.siteName}</span>
+          </span>
+
           {settings.phone && (
-            <a
-              href={`tel:${settings.phone}`}
-              className="flex items-center gap-1.5 transition-colors hover:text-primary"
-            >
-              <Phone className="h-3.5 w-3.5 text-primary" /> {settings.phone}
-            </a>
+            <>
+              <span className="h-4 w-px bg-white/20" />
+              <a href={`tel:${settings.phone}`} className="flex items-center gap-1.5 text-white/90 hover:text-white">
+                <Phone className="h-3.5 w-3.5 text-[#fddc35]" />
+                {settings.phone}
+              </a>
+            </>
           )}
           {settings.email && (
-            <a
-              href={`mailto:${settings.email}`}
-              className="flex items-center gap-1.5 transition-colors hover:text-primary"
-            >
-              <Mail className="h-3.5 w-3.5 text-primary" /> {settings.email}
-            </a>
+            <>
+              <span className="h-4 w-px bg-white/20" />
+              <a href={`mailto:${settings.email}`} className="hidden items-center gap-1.5 text-white/90 hover:text-white lg:flex">
+                <Mail className="h-3.5 w-3.5 text-[#fddc35]" />
+                {settings.email}
+              </a>
+            </>
           )}
-          {socials.length > 0 && (
-            <span className="flex items-center gap-3 border-l pl-4">
+        </div>
+
+        {/* ── Right: angled red Follow-Us block (bleeds to the edge) ── */}
+        <div className="relative flex items-stretch">
+          {/* red bleed to the screen's right edge */}
+          <span className={`absolute left-full inset-y-0 w-screen ${ACCENT}`} />
+          {/* yellow accent line along the diagonal (peeks 4px to the left of the red edge) */}
+          <span
+            className="absolute inset-y-0 -left-1 right-0 bg-[#fddc35]"
+            style={{ clipPath: "polygon(18px 0, 100% 0, 100% 100%, 0 100%)" }}
+          />
+          <div
+            className={`relative flex items-center gap-2.5 pl-9 pr-5 text-white shadow-[-6px_0_14px_-6px_rgba(0,0,0,0.45)] ${ACCENT}`}
+            style={{ clipPath: "polygon(18px 0, 100% 0, 100% 100%, 0 100%)" }}
+          >
+            <span className="text-[11px] font-semibold uppercase tracking-wider">Follow Us</span>
+            <div className="flex items-center gap-1">
               {socials.map((s, i) => {
                 const Icon = s.icon;
                 return (
                   <a
                     key={i}
-                    href={s.href as string}
+                    href={s.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-muted-foreground transition-colors hover:text-primary"
+                    aria-label="social link"
+                    className="flex h-6 w-6 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/25 hover:text-white"
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-3.5 w-3.5" />
                   </a>
                 );
               })}
-            </span>
-          )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

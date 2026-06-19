@@ -31,6 +31,15 @@ export function SiteFooter({ settings, pages }: SiteFooterProps) {
   const copyright =
     settings.copyrightText || `© ${year} ${settings.siteName}. All rights reserved.`;
 
+  // Always-present legal links — use the matching CMS page if it exists, else the standard slug.
+  const findSlug = (needle: string, fallback: string) =>
+    pages.find((p) => p.slug.includes(needle))?.slug ?? fallback;
+  const legalLinks = [
+    { href: `/${findSlug("privacy", "privacy-policy")}`, label: "Privacy Policy" },
+    { href: `/${findSlug("terms", "terms-and-conditions")}`, label: "Terms & Conditions" },
+    { href: "/contact", label: "Contact Us" },
+  ];
+
   return (
     <footer className="border-t bg-muted/30">
       <div className="container py-14 grid gap-10 md:grid-cols-4">
@@ -102,8 +111,15 @@ export function SiteFooter({ settings, pages }: SiteFooterProps) {
       </div>
 
       <div className="border-t">
-        <div className="container py-5 text-sm text-muted-foreground text-center">
-          {copyright}
+        <div className="container flex flex-col items-center justify-between gap-3 py-5 text-sm text-muted-foreground sm:flex-row">
+          <span>{copyright}</span>
+          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
+            {legalLinks.map((l) => (
+              <Link key={l.href} href={l.href} className="hover:text-foreground">
+                {l.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

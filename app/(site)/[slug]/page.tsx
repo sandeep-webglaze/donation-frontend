@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getPageBySlug } from "@/lib/api/cms";
 import { SITE_URL } from "@/lib/api/server";
 import { buildMetadata } from "@/lib/seo";
+import Image from "next/image";
 
 interface Props {
   params: { slug: string };
@@ -16,7 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Not found", robots: { index: false, follow: false } };
   }
   const page = await getPageBySlug(params.slug);
-  if (!page) return { title: "Not found", robots: { index: false, follow: false } };
+  if (!page)
+    return { title: "Not found", robots: { index: false, follow: false } };
 
   return buildMetadata({
     title: page.metaTitle || page.title,
@@ -30,40 +32,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CmsPageRoute({ params }: Props) {
   if (isAssetLike(params.slug)) notFound();
+
   const page = await getPageBySlug(params.slug);
   if (!page) notFound();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: page.title,
-    url: `${SITE_URL}/${page.slug}`,
-    dateModified: page.updatedAt,
-    description: page.metaDescription || undefined,
-  };
-
   return (
-    <article className="container py-16 max-w-3xl">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <>
       {page.coverImage && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={page.coverImage}
-          alt={page.title}
-          className="rounded-2xl mb-8 w-full max-h-80 object-cover"
-        />
+        <section className="relative w-full h-[300px] md:h-[450px] lg:h-[600px]">
+          <Image
+            src={page.coverImage}
+            alt={page.title}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </section>
       )}
-      <h1 className="text-4xl font-bold tracking-tight mb-2">{page.title}</h1>
-      <p className="text-sm text-muted-foreground mb-8">
-        Last updated: {new Date(page.updatedAt).toLocaleDateString()}
-      </p>
-      <div
-        className="cms-content"
-        dangerouslySetInnerHTML={{ __html: page.content }}
-      />
-    </article>
+
+      <article className="w-[90%] lg:w-[80%] mx-auto py-12">
+        <h1 className="text-4xl font-bold mb-3">{page.title}</h1>
+
+        <p className="text-sm text-muted-foreground mb-8">
+          Last updated: {new Date(page.updatedAt).toLocaleDateString()}
+        </p>
+
+        <div
+          className="cms-content"
+          dangerouslySetInnerHTML={{ __html: page.content }}
+        />
+      </article>
+    </>
   );
 }

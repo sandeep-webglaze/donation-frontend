@@ -10,36 +10,43 @@ interface Props {
   onUploaded: (url: string, type: "image" | "video") => void;
   accept?: string;
   label?: string;
+  /** Allow selecting & uploading several files at once (onUploaded fires per file). */
+  multiple?: boolean;
 }
 
-/** Reusable "upload from your computer" button → returns a public URL. */
+/** Reusable "upload from your computer" button → returns public URL(s). */
 export function FileUpload({
   onUploaded,
   accept = "image/*,video/*",
   label = "Upload file",
+  multiple = false,
 }: Props) {
   const ref = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
 
   const handle = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
     setLoading(true);
-    try {
-      const r = await uploadFile(file);
-      onUploaded(r.url, r.type);
-      toast.success("Uploaded");
-    } catch {
-      toast.error("Upload failed — make sure you're signed in as admin.");
-    } finally {
-      setLoading(false);
-      if (ref.current) ref.current.value = "";
+    let ok = 0;
+    for (const file of files) {
+      try {
+        const r = await uploadFile(file);
+        onUploaded(r.url, r.type);
+        ok++;
+      } catch {
+        /* keep going */
+      }
     }
+    setLoading(false);
+    if (ref.current) ref.current.value = "";
+    if (ok > 0) toast.success(`Uploaded ${ok} file${ok > 1 ? "s" : ""}`);
+    else toast.error("Upload failed — make sure you're signed in as admin.");
   };
 
   return (
     <>
-      <input ref={ref} type="file" accept={accept} className="hidden" onChange={handle} />
+      <input ref={ref} type="file" accept={accept} multiple={multiple} className="hidden" onChange={handle} />
       <Button
         type="button"
         variant="outline"

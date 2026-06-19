@@ -24,6 +24,9 @@ export const seoAdminApi = {
     unwrap(await apiClient.get(`/seo/${key}`)),
   upsert: async (key: string, payload: Partial<PageSeo>): Promise<PageSeo> =>
     unwrap(await apiClient.put(`/seo/${key}`, payload)),
+  remove: async (key: string): Promise<void> => {
+    await apiClient.delete(`/seo/${key}`);
+  },
 };
 
 // ─── CMS Pages ───────────────────────────────────────────────────────────────
@@ -73,6 +76,8 @@ export const galleryAdminApi = {
     unwrap(await apiClient.get(`/gallery?pageKey=${pageKey}&section=${section}`)),
   create: async (data: Partial<GalleryItem>): Promise<GalleryItem> =>
     unwrap(await apiClient.post("/gallery", data)),
+  update: async (id: string, data: Partial<GalleryItem>): Promise<GalleryItem> =>
+    unwrap(await apiClient.patch(`/gallery/${id}`, data)),
   remove: async (id: string): Promise<void> => {
     await apiClient.delete(`/gallery/${id}`);
   },
@@ -87,4 +92,7 @@ export const contentAdminApi = {
     data: Partial<ContentBlock>
   ): Promise<ContentBlock> =>
     unwrap(await apiClient.put(`/content/${pageKey}/${sectionKey}`, data)),
+  remove: async (pageKey: string, sectionKey: string): Promise<void> => {
+    await apiClient.delete(`/content/${pageKey}/${sectionKey}`);
+  },
 };

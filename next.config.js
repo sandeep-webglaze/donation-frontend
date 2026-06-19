@@ -5,6 +5,7 @@ const nextConfig = {
       "avatars.githubusercontent.com",
       "images.unsplash.com",
       "via.placeholder.com",
+      "images.squarespace-cdn.com", // Add this
     ],
   },
   experimental: {

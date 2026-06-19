@@ -13,7 +13,8 @@ const PLACEHOLDERS = [
 ];
 
 export async function Gallery() {
-  const items = (await getGallery("home", "gallery")).slice(0, 8);
+  // Single source: the Media page (admin: Pages → Gallery / Media). Show a teaser.
+  const items = (await getGallery("gallery")).slice(0, 8);
 
   return (
     <section className="container py-20 md:py-28">

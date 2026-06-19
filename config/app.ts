@@ -4,8 +4,6 @@ import {
   Settings,
   FileText,
   FileStack,
-  Search,
-  Image,
   HelpCircle,
 } from "lucide-react";
 import type { NavItem } from "@/types";
@@ -41,16 +39,6 @@ export const SIDEBAR_NAV: NavItem[] = [
     label: "CMS Pages",
     href: ROUTES.CMS,
     icon: FileText,
-  },
-  {
-    label: "SEO Manager",
-    href: ROUTES.SEO,
-    icon: Search,
-  },
-  {
-    label: "Gallery",
-    href: ROUTES.GALLERY,
-    icon: Image,
   },
   {
     label: "Users",

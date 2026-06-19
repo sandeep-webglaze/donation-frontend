@@ -2,18 +2,31 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ExternalLink, Search, FileStack } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExternalLink, FileStack, FileText, Search, Images } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SITE_PAGES } from "@/config/pages";
 import { useContentList } from "@/lib/hooks/useAdmin";
 import { SectionEditor } from "@/components/admin/SectionEditor";
+import { PageSeoForm } from "@/components/admin/PageSeoForm";
+import { PageMedia } from "@/components/admin/PageMedia";
+
+type Tab = "content" | "seo" | "gallery";
+
+const TABS: { key: Tab; label: string; icon: typeof FileText }[] = [
+  { key: "content", label: "Content", icon: FileText },
+  { key: "seo", label: "SEO", icon: Search },
+  { key: "gallery", label: "Gallery", icon: Images },
+];
 
 export function PagesManager() {
   const [pageKey, setPageKey] = useState(SITE_PAGES[0].key);
+  const [tab, setTab] = useState<Tab>("content");
   const { data: blocks = [] } = useContentList();
+
   const page = SITE_PAGES.find((p) => p.key === pageKey)!;
+  const editableSections = page.sections.filter((s) => s.fields.length > 0);
   const blockFor = (sk: string) =>
     blocks.find((b) => b.pageKey === pageKey && b.sectionKey === sk);
 
@@ -47,24 +60,48 @@ export function PagesManager() {
       <div className="space-y-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
-            <div>
-              <CardTitle>{page.label}</CardTitle>
-              <CardDescription>Edit each section&apos;s content &amp; media. Changes go live on save.</CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/admin/seo"><Search className="mr-1.5 h-4 w-4" /> SEO</Link>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link href={page.path} target="_blank"><ExternalLink className="mr-1.5 h-4 w-4" /> View</Link>
-              </Button>
-            </div>
+            <CardTitle>{page.label}</CardTitle>
+            <Button variant="outline" size="sm" asChild>
+              <Link href={page.path} target="_blank"><ExternalLink className="mr-1.5 h-4 w-4" /> View page</Link>
+            </Button>
           </CardHeader>
+
+          {/* Tabs */}
+          <CardContent>
+            <div className="flex gap-1 rounded-lg border bg-muted/40 p-1">
+              {TABS.map((t) => {
+                const Icon = t.icon;
+                return (
+                  <button
+                    key={t.key}
+                    onClick={() => setTab(t.key)}
+                    className={cn(
+                      "flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                      tab === t.key ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <Icon className="h-4 w-4" /> {t.label}
+                  </button>
+                );
+              })}
+            </div>
+          </CardContent>
         </Card>
 
-        {page.sections.map((s) => (
-          <SectionEditor key={s.key} pageKey={pageKey} section={s} block={blockFor(s.key)} />
-        ))}
+        {/* Content tab */}
+        {tab === "content" && (
+          <div className="space-y-4">
+            {editableSections.map((s) => (
+              <SectionEditor key={s.key} pageKey={pageKey} section={s} block={blockFor(s.key)} />
+            ))}
+          </div>
+        )}
+
+        {/* SEO tab */}
+        {tab === "seo" && <PageSeoForm page={page} />}
+
+        {/* Gallery tab */}
+        {tab === "gallery" && <PageMedia page={page} />}
       </div>
     </div>
   );
