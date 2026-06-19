@@ -77,7 +77,7 @@ export async function Hero({ settings }: { settings: SiteSettings }) {
             className="absolute left-3 top-16 hidden h-[70%] w-3 -skew-x-12 bg-white/40 lg:block"
           />
 
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/30 shadow-2xl">
+          <div className="relative aspect-[5/4] w-full overflow-hidden rounded-[2rem] border border-white/30 shadow-2xl">
             {heroImg ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img

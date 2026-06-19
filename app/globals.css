@@ -95,3 +95,6 @@
 .cms-content th { @apply bg-muted font-semibold; }
 .cms-content .cms-embed { @apply relative my-6 w-full overflow-hidden rounded-xl; padding-top: 56.25%; }
 .cms-content .cms-embed iframe { @apply absolute inset-0 h-full w-full border-0; }
+
+
+

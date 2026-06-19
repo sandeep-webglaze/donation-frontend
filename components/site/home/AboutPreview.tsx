@@ -72,7 +72,7 @@ export async function AboutPreview({ settings }: { settings: SiteSettings }) {
                   </span>
                   <div>
                     <p className="flex items-center gap-1.5 font-semibold">
-                      <Check className="h-4 w-4 text-primary" /> {f.title}
+                      {f.title}
                     </p>
                     <p className="mt-0.5 text-sm text-muted-foreground">{f.desc}</p>
                   </div>

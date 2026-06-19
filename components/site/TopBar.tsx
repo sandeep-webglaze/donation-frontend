@@ -30,14 +30,14 @@ export function TopBar({ settings }: { settings: SiteSettings }) {
         {/* ── Left: welcome + contact ── */}
         <div className="flex items-center gap-4">
           <span>
-            <span className="font-semibold text-[#fddc35]">Welcome</span>
-            <span className="text-white/85"> to {settings.siteName}</span>
+            <span className="text-[14px] font-semibold text-[#fddc35]">Welcome</span>
+            <span className="text-[14px] text-white/85"> to {settings.siteName}</span>
           </span>
 
           {settings.phone && (
             <>
               <span className="h-4 w-px bg-white/20" />
-              <a href={`tel:${settings.phone}`} className="flex items-center gap-1.5 text-white/90 hover:text-white">
+              <a href={`tel:${settings.phone}`} className="text-[14px] flex items-center gap-1.5 text-white/90 hover:text-white">
                 <Phone className="h-3.5 w-3.5 text-[#fddc35]" />
                 {settings.phone}
               </a>
@@ -46,7 +46,7 @@ export function TopBar({ settings }: { settings: SiteSettings }) {
           {settings.email && (
             <>
               <span className="h-4 w-px bg-white/20" />
-              <a href={`mailto:${settings.email}`} className="hidden items-center gap-1.5 text-white/90 hover:text-white lg:flex">
+              <a href={`mailto:${settings.email}`} className="text-[14px] hidden items-center gap-1.5 text-white/90 hover:text-white lg:flex">
                 <Mail className="h-3.5 w-3.5 text-[#fddc35]" />
                 {settings.email}
               </a>
@@ -67,23 +67,24 @@ export function TopBar({ settings }: { settings: SiteSettings }) {
             className={`relative flex items-center gap-2.5 pl-9 pr-5 text-white shadow-[-6px_0_14px_-6px_rgba(0,0,0,0.45)] ${ACCENT}`}
             style={{ clipPath: "polygon(18px 0, 100% 0, 100% 100%, 0 100%)" }}
           >
-            <span className="text-[11px] font-semibold uppercase tracking-wider">Follow Us</span>
-            <div className="flex items-center gap-1">
-              {socials.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <a
-                    key={i}
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="social link"
-                    className="flex h-6 w-6 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/25 hover:text-white"
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                  </a>
-                );
-              })}
+            <span className="text-[14px] font-medium tracking-wider">Follow Us</span>
+            <div className="flex items-center gap-2">
+                  {socials.map((s, i) => {
+                    const Icon = s.icon;
+
+                    return (
+                      <a
+                        key={i}
+                        href={s.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="social link"
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-white"
+                      >
+                        <Icon className="h-3.5 w-3.5 text-[#D44B55]" />
+                      </a>
+                    );
+                  })}
             </div>
           </div>
         </div>
