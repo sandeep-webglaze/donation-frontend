@@ -1,12 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "avatars.githubusercontent.com",
-      "images.unsplash.com",
-      "via.placeholder.com",
-      "images.squarespace-cdn.com", // Add this
-    ],
+    // Allow any HTTPS image host — admins paste arbitrary image URLs from the
+    // CMS, and Cloudinary (res.cloudinary.com) serves uploaded media.
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   experimental: {
     serverActions: {
