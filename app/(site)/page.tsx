@@ -1,5 +1,4 @@
 import { getSettings } from "@/lib/api/settings";
-import { getPageContent } from "@/lib/api/content";
 import { buildMetadata } from "@/lib/seo";
 import { Hero } from "@/components/site/home/Hero";
 import { Stats } from "@/components/site/home/Stats";
@@ -11,17 +10,13 @@ import { DonateBanner } from "@/components/site/home/DonateBanner";
 import { Testimonials } from "@/components/site/home/Testimonials";
 import { Quote } from "@/components/site/home/Quote";
 import { Gallery } from "@/components/site/home/Gallery";
-import { Newsletter } from "@/components/site/home/Newsletter";
+import { ContactSection } from "@/components/site/ContactSection";
 
 // SEO is admin-managed via the SEO Manager (pageKey "home"), with global fallback.
 export const generateMetadata = () => buildMetadata({ pageKey: "home", path: "/" });
 
 export default async function HomePage() {
-  const [settings, content] = await Promise.all([
-    getSettings(),
-    getPageContent("home"),
-  ]);
-  const nl = content.newsletter;
+  const settings = await getSettings();
 
   return (
     <>
@@ -35,7 +30,7 @@ export default async function HomePage() {
       <Testimonials />
       <Quote />
       <Gallery />
-      <Newsletter title={nl?.title || undefined} subtitle={nl?.subtitle || undefined} />
+      <ContactSection />
     </>
   );
 }

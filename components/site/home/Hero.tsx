@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PlayVideoButton } from "@/components/site/PlayVideoButton";
+import { MediaShowcase } from "@/components/site/MediaShowcase";
 import { TopoLines } from "@/components/site/Decor";
 import { getGallery } from "@/lib/api/gallery-items";
 import { getPageContent } from "@/lib/api/content";
@@ -13,8 +13,6 @@ export async function Hero({ settings }: { settings: SiteSettings }) {
     getPageContent("home"),
   ]);
   const c = content.hero;
-  const heroImg = media.find((g) => g.type === "image")?.url || null;
-  const introVideo = media.find((g) => g.type === "video")?.url || null;
 
   const eyebrow = c?.subtitle || "Change the world together";
   const heading = c?.title || "Carrying forward a timeless legacy";
@@ -77,21 +75,7 @@ export async function Hero({ settings }: { settings: SiteSettings }) {
             className="absolute left-3 top-16 hidden h-[70%] w-3 -skew-x-12 bg-white/40 lg:block"
           />
 
-          <div className="relative aspect-[5/4] w-full overflow-hidden rounded-[2rem] border border-white/30 shadow-2xl">
-            {heroImg ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={heroImg}
-                alt={settings.siteName}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="h-full w-full bg-white/10 backdrop-blur-sm" />
-            )}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <PlayVideoButton url={introVideo} />
-            </div>
-          </div>
+          <MediaShowcase items={media} aspect="aspect-[5/4]" />
         </div>
       </div>
     </section>

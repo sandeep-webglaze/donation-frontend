@@ -26,7 +26,7 @@ const ITEMS = [
 
 export function Testimonials() {
   return (
-    <section className="container py-20 md:py-24">
+    <section className="container py-16 md:py-20">
       <div className="mx-auto max-w-2xl text-center">
         <p className="text-sm font-semibold uppercase tracking-wider text-primary">Voices of Mewar</p>
         <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight md:text-4xl">

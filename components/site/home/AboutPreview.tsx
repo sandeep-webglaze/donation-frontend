@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PlayVideoButton } from "@/components/site/PlayVideoButton";
 import { getGallery } from "@/lib/api/gallery-items";
 import { getPageContent } from "@/lib/api/content";
+import { posterFor } from "@/lib/media";
 import type { SiteSettings } from "@/lib/api/settings";
 
 const FEATURES = [
@@ -18,7 +19,9 @@ export async function AboutPreview({ settings }: { settings: SiteSettings }) {
   ]);
   const c = content.about;
   const img = media.find((m) => m.type === "image")?.url || null;
-  const video = media.find((m) => m.type === "video")?.url || null;
+  const videoItem = media.find((m) => m.type === "video") || null;
+  const video = videoItem?.url || null;
+  const videoPoster = videoItem ? posterFor(videoItem) : null;
 
   const heading = c?.title || "A timeless legacy of compassion & care";
   const body =
@@ -26,7 +29,7 @@ export async function AboutPreview({ settings }: { settings: SiteSettings }) {
     "The Friends of Mewar carries forward the values of the House of Mewar — supporting children in need, advancing preventive healthcare, empowering women through education, and preserving a centuries-old cultural heritage.";
 
   return (
-    <section className="container py-20 md:py-28">
+    <section className="container py-16 md:py-20">
       <div className="grid items-center gap-12 lg:grid-cols-2">
         {/* Left — image with ribbon + video */}
         <div className="relative">
@@ -46,10 +49,19 @@ export async function AboutPreview({ settings }: { settings: SiteSettings }) {
             Get Inspired · Donate · Help
           </div>
 
-          {/* overlapping video card */}
-          <div className="absolute -bottom-6 right-2 hidden h-36 w-52 items-center justify-center overflow-hidden rounded-2xl border-4 border-background bg-secondary/30 shadow-2xl sm:flex">
-            <PlayVideoButton url={video} />
-          </div>
+          {/* overlapping video card (shows the video's thumbnail) */}
+          {video && (
+            <div className="absolute -bottom-6 right-2 hidden h-36 w-52 items-center justify-center overflow-hidden rounded-2xl border-4 border-background bg-secondary/30 shadow-2xl sm:flex">
+              {videoPoster && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={videoPoster} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              )}
+              <div className="absolute inset-0 bg-black/20" />
+              <div className="relative scale-90">
+                <PlayVideoButton url={video} />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right — copy */}

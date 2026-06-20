@@ -33,6 +33,8 @@ export const SITE_PAGES: PageDef[] = [
       { key: "hero", label: "Hero", fields: ["title", "subtitle", "body"], media: "media", hint: "Big top banner. Add 1 image + 1 video." },
       { key: "about", label: "About preview", fields: ["title", "body"], media: "images", hint: "About section under Causes." },
       { key: "causes", label: "Our Causes (cards)", fields: [], media: "images", hint: "Up to 3 images — one per cause card, in shown order." },
+      { key: "campaign", label: "Featured Campaign", fields: ["title", "body"], media: "images", hint: "Add 2 images: 1st = left card, 2nd = right circular." },
+      { key: "quote", label: "Quote", fields: ["subtitle", "body"], media: "single-image", hint: "Quote text (Body) + author name (Subtitle) + optional author photo." },
       { key: "donate", label: "Donate banner", fields: ["title", "subtitle"] },
       { key: "newsletter", label: "Newsletter", fields: ["title", "subtitle"] },
     ],
@@ -60,6 +62,15 @@ export const SITE_PAGES: PageDef[] = [
       { key: "projects", label: "Projects & Stories", fields: [], media: "media", hint: "Photos/videos. Add a caption to each as the story title." },
     ],
   })),
+  {
+    key: "contact",
+    label: "Contact Us",
+    path: "/contact",
+    sections: [
+      { key: "intro", label: "Heading & text", fields: ["title", "subtitle"], hint: "Title + short line for the contact section." },
+      { key: "hero", label: "Side image / video", fields: [], media: "media", hint: "Background image + optional intro video (shown on the right)." },
+    ],
+  },
   {
     key: "gallery",
     label: "Gallery / Media",

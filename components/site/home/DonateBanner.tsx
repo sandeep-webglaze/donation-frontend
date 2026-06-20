@@ -1,10 +1,7 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Heart, ShieldCheck } from "lucide-react";
 import { TopoLines } from "@/components/site/Decor";
 import { getPageContent } from "@/lib/api/content";
-
-const AMOUNTS = ["₹500", "₹1,000", "₹2,500", "₹5,000"];
+import { DonateAmountPicker } from "@/components/site/DonateAmountPicker";
 
 export async function DonateBanner({ siteName }: { siteName: string }) {
   const c = (await getPageContent("home")).donate;
@@ -14,7 +11,7 @@ export async function DonateBanner({ siteName }: { siteName: string }) {
     `Support ${siteName} and help us honour centuries of tradition while transforming lives today.`;
 
   return (
-    <section className="container py-20 md:py-28">
+    <section className="container py-16 md:py-20">
       <div className="on-dark relative overflow-hidden rounded-[2.5rem] border bg-gradient-to-br from-primary to-primary/70 px-8 py-16 text-primary-foreground shadow-2xl shadow-primary/20 md:px-16">
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-amber-300/30 blur-3xl" />
@@ -31,28 +28,9 @@ export async function DonateBanner({ siteName }: { siteName: string }) {
           </h2>
           <p className="mt-4 text-primary-foreground/85">{sub}</p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            {AMOUNTS.map((a) => (
-              <Link
-                key={a}
-                href="/donate"
-                className="rounded-xl border border-white/30 bg-white/10 px-6 py-3 text-lg font-semibold backdrop-blur transition-colors hover:bg-white/20"
-              >
-                {a}
-              </Link>
-            ))}
-            <Link
-              href="/donate"
-              className="rounded-xl border border-white/30 bg-white/10 px-6 py-3 text-lg font-semibold backdrop-blur transition-colors hover:bg-white/20"
-            >
-              Custom
-            </Link>
-          </div>
+          <DonateAmountPicker />
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button size="lg" variant="secondary" asChild className="h-12 px-8 text-base">
-              <Link href="/donate">Donate Now</Link>
-            </Button>
+          <div className="mt-5 flex items-center justify-center">
             <span className="inline-flex items-center gap-1.5 text-sm text-primary-foreground/85">
               <ShieldCheck className="h-4 w-4" /> 80G tax benefit · Secure &amp; instant receipt
             </span>

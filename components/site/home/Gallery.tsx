@@ -17,7 +17,7 @@ export async function Gallery() {
   const items = (await getGallery("gallery")).slice(0, 8);
 
   return (
-    <section className="container py-20 md:py-28">
+    <section className="container py-16 md:py-20">
       <div className="mx-auto max-w-2xl text-center">
         <p className="text-sm font-semibold uppercase tracking-wider text-primary">Our Work</p>
         <h2 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">Glimpses of impact in Mewar</h2>
