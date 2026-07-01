@@ -41,21 +41,23 @@ export function SiteFooter({ settings, pages }: SiteFooterProps) {
   ];
 
   return (
-    <footer className="border-t bg-muted/30">
-      <div className="container py-14 grid gap-10 md:grid-cols-4">
+    <footer className="relative bg-[linear-gradient(135deg,#7c2128_0%,#a32f37_45%,#d44b55_100%)] text-white/80">
+      {/* brand accent strip */}
+      <div aria-hidden className="h-1.5 w-full bg-[linear-gradient(90deg,#d44b55_0%,#fddc35_50%,#d44b55_100%)]" />
+
+      <div className="container grid gap-10 py-16 md:grid-cols-4">
         {/* Brand + socials */}
-        <div className="space-y-3 md:col-span-2">
-          <div className="flex items-center gap-2">
+        <div className="space-y-4 md:col-span-2">
+          <div className="inline-flex rounded-xl bg-white px-3 py-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={settings.logo || FOM_LOGO} alt={settings.siteName} className="h-10 w-auto" />
           </div>
-          {settings.metaDescription && (
-            <p className="text-sm text-muted-foreground max-w-sm">
-              {settings.metaDescription}
-            </p>
-          )}
+          <p className="max-w-sm text-sm leading-relaxed text-white/60">
+            {settings.metaDescription ||
+              "Born from the values of the House of Mewar, we advance healthcare, women’s empowerment & education, and cultural preservation."}
+          </p>
           {socials.length > 0 && (
-            <div className="flex gap-2 pt-1">
+            <div className="flex gap-2.5 pt-1">
               {socials.map((soc, i) => {
                 const Icon = soc.icon;
                 return (
@@ -64,7 +66,8 @@ export function SiteFooter({ settings, pages }: SiteFooterProps) {
                     href={soc.href as string}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border bg-background text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                    aria-label="social link"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white/80 transition-colors hover:bg-secondary hover:text-[#3b141a]"
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -74,48 +77,46 @@ export function SiteFooter({ settings, pages }: SiteFooterProps) {
           )}
         </div>
 
-        {/* Quick links — published CMS pages */}
-        <div className="space-y-2 text-sm">
-          <p className="font-semibold text-foreground">Quick Links</p>
-          <Link href="/" className="block text-muted-foreground hover:text-foreground">Home</Link>
+        {/* Quick links */}
+        <div className="space-y-3 text-sm">
+          <p className="font-semibold uppercase tracking-wide text-white">Quick Links</p>
+          <Link href="/" className="block text-white/60 transition-colors hover:text-secondary">Home</Link>
+          <Link href="/#causes" className="block text-white/60 transition-colors hover:text-secondary">Our Causes</Link>
+          <Link href="/gallery" className="block text-white/60 transition-colors hover:text-secondary">Media</Link>
           {pages.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/${p.slug}`}
-              className="block text-muted-foreground hover:text-foreground"
-            >
+            <Link key={p.slug} href={`/${p.slug}`} className="block text-white/60 transition-colors hover:text-secondary">
               {p.title}
             </Link>
           ))}
         </div>
 
         {/* Contact */}
-        <div className="space-y-2 text-sm">
-          <p className="font-semibold text-foreground">Contact</p>
+        <div className="space-y-3 text-sm">
+          <p className="font-semibold uppercase tracking-wide text-white">Contact</p>
           {settings.email && (
-            <a href={`mailto:${settings.email}`} className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
-              <Mail className="h-3.5 w-3.5" /> {settings.email}
+            <a href={`mailto:${settings.email}`} className="flex items-center gap-2 text-white/60 transition-colors hover:text-secondary">
+              <Mail className="h-4 w-4 text-secondary" /> {settings.email}
             </a>
           )}
           {settings.phone && (
-            <a href={`tel:${settings.phone}`} className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
-              <Phone className="h-3.5 w-3.5" /> {settings.phone}
+            <a href={`tel:${settings.phone}`} className="flex items-center gap-2 text-white/60 transition-colors hover:text-secondary">
+              <Phone className="h-4 w-4 text-secondary" /> {settings.phone}
             </a>
           )}
           {settings.address && (
-            <p className="flex items-start gap-2 text-muted-foreground">
-              <MapPin className="h-3.5 w-3.5 mt-0.5" /> {settings.address}
+            <p className="flex items-start gap-2 text-white/60">
+              <MapPin className="mt-0.5 h-4 w-4 text-secondary" /> {settings.address}
             </p>
           )}
         </div>
       </div>
 
-      <div className="border-t">
-        <div className="container flex flex-col items-center justify-between gap-3 py-5 text-sm text-muted-foreground sm:flex-row">
+      <div className="border-t border-white/10">
+        <div className="container flex flex-col items-center justify-between gap-3 py-5 text-sm text-white/50 sm:flex-row">
           <span>{copyright}</span>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
             {legalLinks.map((l) => (
-              <Link key={l.href} href={l.href} className="hover:text-foreground">
+              <Link key={l.href} href={l.href} className="transition-colors hover:text-secondary">
                 {l.label}
               </Link>
             ))}

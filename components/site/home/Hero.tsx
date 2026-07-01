@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MediaShowcase } from "@/components/site/MediaShowcase";
+import { HeroMediaDiagonal } from "@/components/site/HeroMediaDiagonal";
 import { TopoLines } from "@/components/site/Decor";
 import { getGallery } from "@/lib/api/gallery-items";
 import { getPageContent } from "@/lib/api/content";
@@ -21,15 +22,18 @@ export async function Hero({ settings }: { settings: SiteSettings }) {
     "The Friends of Mewar was born from the values of the House of Mewar — the world's longest-serving dynasty — advancing healthcare, women's empowerment & education, and cultural preservation.";
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary">
-      {/* logo-color accents */}
+    <section className="relative overflow-hidden bg-[linear-gradient(135deg,#d44b55_0%,#c43c46_50%,#a32f37_100%)]">
+      {/* brand glows — red base with a warm yellow accent in the corner */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-0">
-        <div className="absolute -top-32 right-10 h-96 w-96 rounded-full bg-secondary/30 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-primary/40 blur-[120px]" />
+        <div className="absolute -bottom-20 -right-10 h-[28rem] w-[28rem] rounded-full bg-secondary/25 blur-[130px]" />
+        <div className="absolute -top-32 left-0 h-80 w-80 rounded-full bg-white/10 blur-[120px]" />
       </div>
       <TopoLines className="absolute inset-0 h-full w-full text-white/10" />
 
-      <div className="container grid items-center gap-12 pt-16 pb-32 lg:grid-cols-2 lg:gap-10 lg:pt-24 lg:pb-44">
+      {/* desktop diagonal media panel (bleeds to the right edge) */}
+      <HeroMediaDiagonal items={media} />
+
+      <div className="container relative z-10 grid items-center gap-12 pt-16 pb-32 lg:grid-cols-2 lg:gap-10 lg:pt-24 lg:pb-44">
         {/* Left — copy (FOM content) */}
         <div className="space-y-7">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/95 px-4 py-1.5 text-sm font-semibold text-foreground shadow-sm backdrop-blur-sm">
@@ -65,16 +69,8 @@ export async function Hero({ settings }: { settings: SiteSettings }) {
         </div>
 
         {/* Right — image + play */}
-        <div className="relative">
-          <div
-            aria-hidden
-            className="absolute -left-2 top-8 hidden h-[80%] w-3 -skew-x-12 bg-secondary lg:block"
-          />
-          <div
-            aria-hidden
-            className="absolute left-3 top-16 hidden h-[70%] w-3 -skew-x-12 bg-white/40 lg:block"
-          />
-
+        {/* mobile media (desktop uses the diagonal panel above) */}
+        <div className="relative lg:hidden">
           <MediaShowcase items={media} aspect="aspect-[5/4]" />
         </div>
       </div>

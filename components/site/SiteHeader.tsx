@@ -20,6 +20,7 @@ export function SiteHeader({ settings, pages }: SiteHeaderProps) {
 
   const tailLinks = [
     { href: "/gallery", label: "Media" },
+    { href: "/careers", label: "Careers" },
     ...navPages.map((p) => ({ href: `/${p.slug}`, label: p.title })),
     { href: "/contact", label: "Contact" },
   ];

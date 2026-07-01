@@ -6,7 +6,7 @@ import { posterFor } from "@/lib/media";
 import { ContactForm } from "@/components/site/ContactForm";
 import { PlayVideoButton } from "@/components/site/PlayVideoButton";
 
-/** Reusable Contact panel (used on /contact and the home page). */
+/** Reusable Contact panel (used on /contact and the home page) — light theme. */
 export async function ContactSection() {
   const [settings, media, content] = await Promise.all([
     getSettings(),
@@ -26,9 +26,16 @@ export async function ContactSection() {
 
   return (
     <section className="container py-16 md:py-20">
-      <div className="on-dark relative overflow-hidden rounded-[2.5rem] bg-[linear-gradient(135deg,#6d1f26_0%,#a32f37_55%,#d44b55_100%)] text-white shadow-2xl">
-        {/* Right image with brand overlay */}
-        <div aria-hidden className="absolute inset-y-0 right-0 hidden w-1/2 lg:block">
+      <div className="on-dark relative overflow-hidden rounded-[2.5rem] text-white shadow-2xl bg-[linear-gradient(135deg,#6d1f26_0%,#a32f37_55%,#d44b55_100%)]">
+        {/* red → yellow accent strip */}
+        <div aria-hidden className="absolute inset-x-0 top-0 z-10 h-1.5 bg-[linear-gradient(90deg,#d44b55_0%,#fddc35_100%)]" />
+        {/* warm yellow corner glow */}
+        <div aria-hidden className="pointer-events-none absolute -top-20 -left-10 z-0 h-64 w-64 rounded-full bg-secondary/25 blur-3xl" />
+        {/* grid boxes background */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0 opacity-40 [background-image:linear-gradient(to_right,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:36px_36px]" />
+
+        {/* Right image, fading into the cream panel */}
+        <div aria-hidden className="absolute inset-y-0 right-0 z-0 hidden w-1/2 lg:block">
           {sideImg ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={sideImg} alt="" className="h-full w-full object-cover" />
@@ -48,10 +55,10 @@ export async function ContactSection() {
         <div className="relative grid gap-10 p-8 md:p-12 lg:grid-cols-2 lg:p-16">
           {/* Left — copy + form */}
           <div>
-            <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-secondary">
+            <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-secondary">
               <Heart className="h-4 w-4 fill-secondary" /> Contact Us
             </p>
-            <h2 className="mt-3 text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">{title}</h2>
+            <h2 className="mt-3 font-serif text-3xl font-bold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl">{title}</h2>
             <p className="mt-4 max-w-md text-white/85">{subtitle}</p>
 
             <div className="mt-8">

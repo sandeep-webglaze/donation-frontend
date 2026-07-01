@@ -70,16 +70,44 @@ export function MediaShowcase({
       >
         {poster ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={poster} alt="" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <img
+            src={poster}
+            alt=""
+            className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            onError={(e) => {
+              const t = e.currentTarget;
+              if (!t.dataset.fb && t.src.includes("maxresdefault")) {
+                t.dataset.fb = "1";
+                t.src = t.src.replace("maxresdefault", "mqdefault");
+              }
+            }}
+          />
         ) : (
           <span className="block h-full w-full bg-white/10 backdrop-blur-sm" />
         )}
 
+        {/* subtle matching overlay so the frame blends with the section */}
+        <span aria-hidden className="pointer-events-none absolute inset-0 rounded-[2rem] bg-gradient-to-b from-white/15 via-transparent to-black/15 ring-1 ring-inset ring-white/25" />
+
         {current.type === "video" && (
           <span className="absolute inset-0 flex items-center justify-center">
-            <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-white text-primary shadow-xl">
-              <span className="absolute inset-0 animate-ping rounded-full bg-white/50" />
-              <Play className="relative h-7 w-7 translate-x-0.5 fill-primary" />
+            <span className="relative flex h-28 w-28 items-center justify-center md:h-32 md:w-32">
+              {/* soft dark disc so the ring text stays readable over busy video */}
+              <span aria-hidden className="absolute inset-1 rounded-full bg-black/30 backdrop-blur-[2px]" />
+              {/* rotating "PLAY INTRO VIDEO" ring */}
+              <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full animate-[spin_16s_linear_infinite]">
+                <defs>
+                  <path id="ms-play-ring" d="M60,12 a48,48 0 1,1 0,96 a48,48 0 1,1 0,-96" />
+                </defs>
+                <text style={{ fontSize: 11, letterSpacing: 3, fill: "#fff", fontWeight: 600 }}>
+                  <textPath href="#ms-play-ring">PLAY INTRO VIDEO · PLAY INTRO VIDEO · </textPath>
+                </text>
+              </svg>
+              {/* center play */}
+              <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-primary shadow-xl transition-transform duration-300 group-hover:scale-110">
+                <span className="absolute inset-0 animate-ping rounded-full bg-white/40" />
+                <Play className="relative h-6 w-6 translate-x-0.5 fill-primary" />
+              </span>
             </span>
           </span>
         )}

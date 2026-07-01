@@ -12,27 +12,27 @@ export async function DonateBanner({ siteName }: { siteName: string }) {
 
   return (
     <section className="container py-16 md:py-20">
-      <div className="on-dark relative overflow-hidden rounded-[2.5rem] border bg-gradient-to-br from-primary to-primary/70 px-8 py-16 text-primary-foreground shadow-2xl shadow-primary/20 md:px-16">
+      <div className="on-dark relative overflow-hidden rounded-[2.5rem] px-8 py-14 text-white shadow-2xl shadow-primary/30 md:px-16 md:py-16 bg-[linear-gradient(135deg,#6d1f26_0%,#a32f37_55%,#d44b55_100%)]">
+        {/* grid boxes + decorative glows */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(to_right,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:36px_36px]" />
         <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-amber-300/30 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.15),transparent_50%)]" />
+          <div className="absolute -top-24 right-8 h-72 w-72 rounded-full bg-secondary/30 blur-3xl" />
+          <div className="absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
         </div>
         <TopoLines className="absolute inset-0 h-full w-full text-white/10" />
 
         <div className="relative mx-auto max-w-2xl text-center">
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
-            <Heart className="h-6 w-6" />
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-secondary text-[#122f2a] shadow-lg shadow-black/20 ring-4 ring-white/20">
+            <Heart className="h-7 w-7 fill-current" />
           </div>
-          <h2 className="font-serif text-3xl font-bold leading-tight md:text-4xl">
-            {heading}
-          </h2>
-          <p className="mt-4 text-primary-foreground/85">{sub}</p>
+          <h2 className="font-serif text-3xl font-bold leading-tight md:text-4xl">{heading}</h2>
+          <p className="mt-4 text-white/90">{sub}</p>
 
           <DonateAmountPicker />
 
           <div className="mt-5 flex items-center justify-center">
-            <span className="inline-flex items-center gap-1.5 text-sm text-primary-foreground/85">
-              <ShieldCheck className="h-4 w-4" /> 80G tax benefit · Secure &amp; instant receipt
+            <span className="inline-flex items-center gap-1.5 text-sm text-white/85">
+              <ShieldCheck className="h-4 w-4 text-secondary" /> 80G tax benefit · Secure &amp; instant receipt
             </span>
           </div>
         </div>

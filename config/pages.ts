@@ -63,6 +63,16 @@ export const SITE_PAGES: PageDef[] = [
     ],
   })),
   {
+    key: "careers",
+    label: "Careers",
+    path: "/careers",
+    sections: [
+      { key: "hero", label: "Hero (title + image)", fields: ["title", "subtitle"], media: "single-image", hint: "Top banner title + background image." },
+      { key: "intro", label: "Intro / About working here", fields: ["title", "body"] },
+      { key: "positions", label: "Open Positions (list)", fields: ["title", "body"], hint: "List roles in Body — one per line." },
+    ],
+  },
+  {
     key: "contact",
     label: "Contact Us",
     path: "/contact",

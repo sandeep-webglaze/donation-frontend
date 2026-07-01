@@ -17,8 +17,9 @@ export function posterFor(item: {
   if (item.type === "image") return item.url;
   if (item.thumbnail) return item.thumbnail;
 
+  // maxresdefault = true 16:9, no black bars (falls back to mqdefault via onError in the UI).
   const yt = youtubeId(item.url);
-  if (yt) return `https://img.youtube.com/vi/${yt}/hqdefault.jpg`;
+  if (yt) return `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
 
   // Cloudinary uploaded video → swap the extension for a generated .jpg frame.
   if (/res\.cloudinary\.com\/.+\/video\/upload\//.test(item.url)) {

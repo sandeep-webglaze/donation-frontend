@@ -11,8 +11,13 @@ const WAYS = [
 
 export function WaysToGive() {
   return (
-    <section className="bg-white">
-      <div className="container py-16 md:py-20">
+    <section className="relative overflow-hidden bg-[#f9f6ef]">
+      {/* grid boxes */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-60 [background-image:linear-gradient(to_right,rgba(18,47,42,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(18,47,42,0.05)_1px,transparent_1px)] [background-size:34px_34px]"
+      />
+      <div className="container relative py-16 md:py-20">
         <div className="mx-auto max-w-2xl text-center">
           <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary">
             <span className="text-primary">♥</span> Ways to Give <span className="text-primary">♥</span>

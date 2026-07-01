@@ -44,9 +44,16 @@ export async function AboutPreview({ settings }: { settings: SiteSettings }) {
             )}
           </div>
 
-          {/* vertical ribbon */}
-          <div className="absolute left-4 top-10 hidden rounded-md bg-primary px-3 py-5 text-xs font-bold uppercase tracking-widest text-primary-foreground shadow-lg [writing-mode:vertical-rl] sm:block">
-            Get Inspired · Donate · Help
+          {/* vertical banner ribbon (forked bottom) — hugging the top-left corner */}
+          <div className="absolute left-3 -top-2 z-20 hidden sm:block">
+            <div
+              className="bg-[linear-gradient(180deg,#e1626c_0%,#d44b55_45%,#b9343d_100%)] px-3 pb-8 pt-5 shadow-xl shadow-black/20"
+              style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%)" }}
+            >
+              <span className="block rotate-180 text-[11px] font-bold uppercase tracking-[0.25em] text-white [writing-mode:vertical-rl]">
+                Get Inspired · Donate · Help
+              </span>
+            </div>
           </div>
 
           {/* overlapping video card (shows the video's thumbnail) */}
